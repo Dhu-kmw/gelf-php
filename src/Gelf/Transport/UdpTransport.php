@@ -89,6 +89,21 @@ class UdpTransport extends AbstractTransport
     }
 
     /**
+     * @deprecated use setConnectTimeoutInMs instead
+     * @see TcpTransport::setConnectTimeout
+     */
+    public function setConnectTimeout(int $timeout): void
+    {
+        $this->socketClient->setConnectTimeout($timeout);
+    }
+    
+    public function setConnectTimeoutInMs(int $timeoutInMs): void
+    {
+        // currently socketClient only supports int
+        $this->socketClient->setConnectTimeout((int)ceil($timeoutInMs / 1_000));
+    }
+
+    /**
      * Sends given string in multiple chunks
      */
     private function sendMessageInChunks(string $rawMessage): int
